@@ -79,6 +79,7 @@ function save_tree_state_csv( file, root, type, fields, separator )
 	save_state_csv { file } { wildcard } { fields } { separator }
 end
 
+int CSV_VM_INIT = 0
 function load_state_csv( file, separator )
 	str file
 	str separator
@@ -102,6 +103,10 @@ function load_state_csv( file, separator )
 		foreach token ( { arglist { line } } )
 			if ( row == 0 )
 				if ( col > 0 )
+					if ( CSV_VM_INIT && { strcmp { token } "Vm" } == 0 )
+						token = "initVm"
+					end
+					
 					addfield { farray } { col }
 					setfield { farray } { col } { token }
 				end

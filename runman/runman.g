@@ -219,7 +219,7 @@ function process_line
 		end
 	elif ( { strcmp { command } "synaptic-input" } == 0 )
 		if ( argcount != 7 && argcount != 3 )
-			error "Usage: "{ command }" compartment file Ek gmax tau1 tau2"
+			error "Usage: "{ command }" compartment file [ Ek gmax tau1 tau2 ]"
 		else
 			float Ek, gmax, tau1, tau2
 			if ( argcount == 7 )
@@ -265,10 +265,15 @@ function process_line
 	elif ( { strcmp { command } "load-state-csv" } == 0 )
 		str separator = "	"
 		
-		if ( argcount != 2 )
-			error "Usage: "{ command }" file"
+		if ( argcount != 2 && argcount != 3 )
+			error "Usage: "{ command }" file [ vm_init ]"
 		else
 			str file = { argv 2 }
+			if ( argcount == 3 )
+				CSV_VM_INIT = { argv 3 }
+			else
+				CSV_VM_INIT = 1
+			end
 			
 			load_state_csv \
 				{ file } \
